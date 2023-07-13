@@ -1,0 +1,161 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CategoryType {
+  id: ID!
+  name: String
+  description: String
+}
+
+type SubcategoryType {
+  id: Int!
+  name: String!
+  description: String!
+  category: CategoryType!
+}
+
+type Tag {
+  id: ID!
+  name: String!
+}
+
+type CreateTagResponse {
+  tag: Tag!
+}
+
+type UpdateTagResponse {
+  tag: Tag!
+}
+
+type DeleteTagResponse {
+  success: Boolean!
+}
+
+type Meta {
+  id: ID!
+  metaTitle: String!
+  metaDescription: String
+}
+
+type CreateMetaResponse {
+  meta: Meta!
+}
+
+type UpdateMetaResponse {
+  meta: Meta!
+}
+
+type DeleteMetaResponse {
+  success: Boolean!
+}
+
+type User {
+  username: String!
+  email: String!
+  role: String!
+}
+
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
+type Post {
+  id: ID!
+  title: String!
+  description: String!
+  content: String!
+}
+
+type Query {
+  getAllCategories: [CategoryType!]!
+  getCategory(id: Float!): CategoryType!
+  getSubcategoryById(id: Int!): SubcategoryType!
+  getAllTags: [Tag!]!
+  getAllMeta: [Meta!]!
+  getMetaById(id: Float!): Meta!
+  users: [User!]!
+  user(email: String!): User!
+  getPostById(id: ID!): Post!
+  getAllPosts: [Post!]!
+  searchPosts(input: SearchPostsInput!): [Post!]!
+}
+
+input SearchPostsInput {
+  title: String
+  categoryId: Int
+  tags: [String!]
+}
+
+type Mutation {
+  createCategory(categoryInput: CategoryInput!): CategoryType!
+  updateCategory(id: Float!, categoryInput: CategoryInput!): CategoryType!
+  deleteCategory(id: Float!): Boolean!
+  createSubcategory(subcategoryInput: CreateSubcategoryInput!): SubcategoryType!
+  updateSubcategory(updateSubcategoryInput: UpdateSubcategoryInput!): SubcategoryType!
+  deleteSubcategory(id: Int!): Boolean!
+  createTag(name: String!): CreateTagResponse!
+  updateTag(id: Float!, name: String): UpdateTagResponse!
+  deleteTag(id: Float!): DeleteTagResponse!
+  createMeta(metaTitle: String!, metaDescription: String): CreateMetaResponse!
+  updateMeta(id: Int!, metaTitle: String, metaDescription: String): UpdateMetaResponse!
+  deleteMeta(id: Int!): DeleteMetaResponse!
+  create(createUserInput: CreateUserInput!): User!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  signup(signupUserInput: CreateUserInput!): User!
+  createPost(post: CreatePostInput!): Post!
+  updatePost(post: UpdatePostInput!): Post!
+  deletePost(id: ID!): Boolean!
+}
+
+input CategoryInput {
+  name: String!
+  description: String!
+}
+
+input CreateSubcategoryInput {
+  name: String!
+  description: String!
+  categoryId: Int!
+}
+
+input UpdateSubcategoryInput {
+  id: Int!
+  name: String
+  description: String
+}
+
+input CreateUserInput {
+  email: String!
+  username: String!
+  password: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input CreatePostInput {
+  title: String!
+  description: String!
+  content: String!
+  categoryIds: [Float!]!
+  subcategoryIds: [Float!]!
+  tagIds: [Float!]!
+  metaTitle: String!
+  metaDescription: String!
+}
+
+input UpdatePostInput {
+  id: Float!
+  title: String
+  description: String
+  content: String
+  categoryIds: [Float!]
+  subcategoryIds: [Float!]
+  tagIds: [Float!]
+  metaTitle: String
+  metaDescription: String
+}
