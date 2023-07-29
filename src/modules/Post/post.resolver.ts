@@ -1,4 +1,4 @@
-// post.resolver.ts
+
 import { Resolver, Query, Args, Mutation,Int } from '@nestjs/graphql';
 import { PostService } from './post.service';
 import { PostInput } from './dto/post.dto';
