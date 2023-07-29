@@ -1,4 +1,4 @@
-// post.service.ts
+
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -29,36 +29,34 @@ export class PostService {
     const { metaId } = postData;
     let metaEntity = null;
 
-    // Check if metaId is provided
     if (metaId) {
-      // If provided, attempt to find an existing MetaEntity by its ID
+    
       metaEntity = await this.metaRepository.findOne({where:{id: metaId}});
 
-      // If no existing MetaEntity found, throw an error
+
       if (!metaEntity) {
         throw new NotFoundException('MetaEntity not found');
       }
 
-      // Fetch metaTitle and metaDescription from the existing MetaEntity
       postData.metaTitle = metaEntity.metaTitle;
       postData.metaDescription = metaEntity.metaDescription;
     } else {
-      // If no metaId provided, ensure that metaTitle and metaDescription are provided
+    
       if (!postData.metaTitle || !postData.metaDescription) {
         throw new BadRequestException('Please provide metaTitle and metaDescription or specify a valid metaId.');
       }
     }
 
-    // Fetch the category by ID to ensure it exists
+  
     const category = await this.categoryRepository.findOne({ where: { id: postData.categoryId } });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
 
-    // Fetch the subcategories by IDs if they're provided
+  
     const subcategories = await this.subcategoryRepository.findByIds(postData.subcategoryIds || []);
 
-    // Fetch the tags by IDs if they're provided
+    
     const tags = await this.tagRepository.findByIds(postData.tagIds || []);
 
     const post = new Post();
@@ -70,7 +68,7 @@ export class PostService {
     post.tags = tags;
     post.meta = metaEntity;
 
-    // Save the post entity to the database
+
     const createdPost = await this.postRepository.save(post);
 
     return createdPost;
@@ -103,7 +101,7 @@ async updatePost(id: number, postData: PostInput): Promise<PostType> {
     throw new NotFoundException('Post not found');
   }
 
-  // Update the fields only if they are provided in the mutation
+
   if (postData.title) {
     post.title = postData.title;
   }
@@ -114,7 +112,6 @@ async updatePost(id: number, postData: PostInput): Promise<PostType> {
     post.content = postData.content;
   }
 
-  // Update the category if provided in the mutation
   if (postData.categoryId) {
     const category = await this.categoryRepository.findOne({ where: { id: postData.categoryId } });
     if (!category) {
@@ -122,20 +119,18 @@ async updatePost(id: number, postData: PostInput): Promise<PostType> {
     }
     post.categories = [category];
   }
-
-  // Update the subcategories if provided in the mutation
   if (postData.subcategoryIds) {
     const subcategories = await this.subcategoryRepository.findByIds(postData.subcategoryIds);
     post.subcategories = subcategories;
   }
 
-  // Update the tags if provided in the mutation
+  
   if (postData.tagIds) {
     const tags = await this.tagRepository.findByIds(postData.tagIds);
     post.tags = tags;
   }
 
-  // Update the meta if provided in the mutation
+  
   if (postData.metaId) {
     const metaEntity = await this.metaRepository.findOne({ where: { id: postData.metaId } });
     if (!metaEntity) {
