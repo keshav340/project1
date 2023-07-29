@@ -8,12 +8,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export interface SearchPostsInput {
-    title?: Nullable<string>;
-    categoryId?: Nullable<number>;
-    tags?: Nullable<string[]>;
-}
-
 export interface CategoryInput {
     name: string;
     description: string;
@@ -42,27 +36,33 @@ export interface LoginUserInput {
     password: string;
 }
 
-export interface CreatePostInput {
+export interface PostInput {
     title: string;
     description: string;
     content: string;
-    categoryIds: number[];
-    subcategoryIds: number[];
-    tagIds: number[];
-    metaTitle: string;
-    metaDescription: string;
-}
-
-export interface UpdatePostInput {
-    id: number;
-    title?: Nullable<string>;
-    description?: Nullable<string>;
-    content?: Nullable<string>;
-    categoryIds?: Nullable<number[]>;
+    categoryId: number;
     subcategoryIds?: Nullable<number[]>;
     tagIds?: Nullable<number[]>;
+    metaId?: Nullable<number>;
     metaTitle?: Nullable<string>;
     metaDescription?: Nullable<string>;
+}
+
+export interface CreateCommentInput {
+    text: string;
+    postId: number;
+    username: string;
+}
+
+export interface User {
+    username: string;
+    email: string;
+    role: string;
+}
+
+export interface Comment {
+    id: string;
+    text: string;
 }
 
 export interface CategoryType {
@@ -113,22 +113,32 @@ export interface DeleteMetaResponse {
     success: boolean;
 }
 
-export interface User {
-    username: string;
-    email: string;
-    role: string;
-}
-
 export interface LoginResponse {
     access_token: string;
     user: User;
 }
 
-export interface Post {
+export interface TagType {
+    id: string;
+    name: string;
+}
+
+export interface MetaType {
+    id: string;
+    metaTitle?: Nullable<string>;
+    metaDescription?: Nullable<string>;
+}
+
+export interface PostType {
     id: string;
     title: string;
     description: string;
     content: string;
+    subcategories?: Nullable<SubcategoryType[]>;
+    tags?: Nullable<TagType[]>;
+    meta?: Nullable<MetaType>;
+    categories: CategoryType[];
+    views: number;
 }
 
 export interface IQuery {
@@ -139,10 +149,12 @@ export interface IQuery {
     getAllMeta(): Meta[] | Promise<Meta[]>;
     getMetaById(id: number): Meta | Promise<Meta>;
     users(): User[] | Promise<User[]>;
-    user(email: string): User | Promise<User>;
-    getPostById(id: string): Post | Promise<Post>;
-    getAllPosts(): Post[] | Promise<Post[]>;
-    searchPosts(input: SearchPostsInput): Post[] | Promise<Post[]>;
+    user(id: number): User | Promise<User>;
+    getPostById(id: number): PostType | Promise<PostType>;
+    getAllPosts(): PostType[] | Promise<PostType[]>;
+    getPostsByTitle(title: string): PostType[] | Promise<PostType[]>;
+    getPostsByCategory(categoryId: number): PostType[] | Promise<PostType[]>;
+    getPostsByTag(tagId: number): PostType[] | Promise<PostType[]>;
 }
 
 export interface IMutation {
@@ -161,9 +173,11 @@ export interface IMutation {
     create(createUserInput: CreateUserInput): User | Promise<User>;
     login(loginUserInput: LoginUserInput): LoginResponse | Promise<LoginResponse>;
     signup(signupUserInput: CreateUserInput): User | Promise<User>;
-    createPost(post: CreatePostInput): Post | Promise<Post>;
-    updatePost(post: UpdatePostInput): Post | Promise<Post>;
-    deletePost(id: string): boolean | Promise<boolean>;
+    createPost(postData: PostInput): PostType | Promise<PostType>;
+    deletePost(id: number): boolean | Promise<boolean>;
+    updatePost(id: number, postData: PostInput): PostType | Promise<PostType>;
+    incrementViews(postId: number): PostType | Promise<PostType>;
+    createComment(commentInput: CreateCommentInput): Comment | Promise<Comment>;
 }
 
 type Nullable<T> = T | null;

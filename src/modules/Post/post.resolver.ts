@@ -1,46 +1,54 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { Post } from './entity/post.entity';
+// post.resolver.ts
+import { Resolver, Query, Args, Mutation,Int } from '@nestjs/graphql';
 import { PostService } from './post.service';
-import { CreatePostInput, UpdatePostInput } from './dto/post.dto';
-import { SearchPostsInput } from './args/search-post.input';
+import { PostInput } from './dto/post.dto';
+import { PostType } from './dto/post.type';
 
-@Resolver(() => Post)
+@Resolver('Post')
 export class PostResolver {
-  constructor(private readonly postService: PostService) {}
+  constructor(private postService: PostService) {}
 
-  @Query(() => Post)
-  async getPostById(@Args('id', { type: () => ID }) id: number): Promise<Post> {
-    const post = await this.postService.getPostById(id);
-    if (post) {
-      await this.postService.incrementPostViews(id);
-    }
-    return post;
-  }
-
-  @Query(() => [Post])
-  async getAllPosts(): Promise<Post[]> {
-    return this.postService.getAllPosts();
-  }
-
-  @Query(() => [Post])
-  async searchPosts(@Args('input') input: SearchPostsInput): Promise<Post[]> {
-    const { title, categoryId, tags } = input;
-    return this.postService.searchPosts(title, categoryId, tags);
-  }
-
-  @Mutation(() => Post)
-  async createPost(@Args('post') postData: CreatePostInput): Promise<Post> {
+  @Mutation(() => PostType)
+  async createPost(@Args('postData') postData: PostInput): Promise<PostType> {
     return this.postService.createPost(postData);
   }
 
-  @Mutation(() => Post)
-  async updatePost(@Args('post') postData: UpdatePostInput): Promise<Post> {
-    return this.postService.updatePost(postData);
+  @Query(() => PostType)
+  async getPostById(@Args('id') id: number): Promise<PostType> {
+    return this.postService.getPostById(id);
   }
 
   @Mutation(() => Boolean)
-  async deletePost(@Args('id', { type: () => ID }) id: number): Promise<boolean> {
-    await this.postService.deletePost(id);
-    return true;
+  async deletePost(@Args('id') id: number): Promise<boolean> {
+    return this.postService.deletePost(id);
+  }
+
+  @Query(() => [PostType])
+  async getAllPosts(): Promise<PostType[]> {
+    return this.postService.getAllPosts();
+  }
+
+  @Mutation(() => PostType)
+  async updatePost(
+    @Args('id', { type: () => Int }) id: number,
+    @Args('postData') postData: PostInput,
+  ): Promise<PostType> {
+    return this.postService.updatePost(id, postData);
+  }
+  @Mutation(() => PostType)
+  async incrementViews(@Args('postId') postId: number): Promise<PostType> {
+    return this.postService.incrementViews(postId);
+  }
+  @Query(() => [PostType])
+  async getPostsByTitle(@Args('title') title: string): Promise<PostType[]> {
+    return this.postService.getPostsByTitle(title);
+  }
+  @Query(() => [PostType])
+  async getPostsByCategory(@Args('categoryId') categoryId: number): Promise<PostType[]> {
+    return this.postService.getPostsByCategory(categoryId);
+  }
+  @Query(() => [PostType])
+  async getPostsByTag(@Args('tagId') tagId: number): Promise<PostType[]> {
+    return this.postService.getPostsByTag(tagId);
   }
 }

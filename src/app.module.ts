@@ -17,11 +17,11 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { User } from './modules/users/entities/user.entity';
 import { PostModule } from './modules/Post/post.module';
-
-
+import { Comment } from './modules/comment/comment.entity';
+import { CommentModule } from './modules/comment/comment.module';
 
 @Module({
-  imports: [CategoryModule,SubcategoryModule,TagModule,MetaModule,UsersModule,AuthModule,PostModule,
+  imports: [CategoryModule,SubcategoryModule,TagModule,MetaModule,UsersModule,AuthModule,PostModule,CommentModule,
     GraphQLModule.forRoot({
       driver: ApolloDriver,
       playground: true,
@@ -35,9 +35,9 @@ import { PostModule } from './modules/Post/post.module';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'Admin',
-      database: 'back',
-      entities:[Category,Subcategory,Post,MetaEntity,TagEntity,User,Post],
+      password: 'keshav',
+      database: 'postgres',
+      entities:[Category,Subcategory,Post,MetaEntity,TagEntity,User,Post,Comment],
       synchronize: true,autoLoadEntities: true,
     }),
   ],

@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn,OneToOne,JoinColumn} from 'typeorm';
+import { Post } from 'src/modules/post/entity/post.entity';
 
 @Entity()
 export class MetaEntity {
@@ -10,8 +11,10 @@ export class MetaEntity {
 
   @Column()
   metaDescription: string;
-  
-  @OneToOne(() => MetaEntity)
+
+  @OneToOne(() => Post, post => post.meta, { onDelete: 'CASCADE' })
   @JoinColumn()
-  meta: MetaEntity;
+  post: Post;
+  
+
 }

@@ -25,9 +25,14 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
-  findOne(@Args('email') email: string): Promise<User> {
+  async findOne(@Args('email') email: string): Promise<User> {
     return this.usersService.findOne(email);
   }
+  @Query(() => User, { name: 'user' })
+  async findOneById(@Args('id') id: number): Promise<User> {
+    return this.usersService.findOneById(id);
+  }
+
 
   @Mutation(() => User)
   create(

@@ -1,6 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn,OneToMany } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
 import Role from 'src/modules/enums/roles.enum';
+import {Comment} from 'src/modules/comment/comment.entity'
+
 
 
 @Entity()
@@ -32,5 +34,7 @@ export class User {
   })
   @Field()
   role: Role;
-
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
+  
 }

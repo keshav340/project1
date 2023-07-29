@@ -13,6 +13,11 @@ export class UsersService {
   findAll(): Promise<User[]> {
     return this.usersRespository.find();
   }
+  findOneById(id: number): Promise<User> {
+    return this.usersRespository.findOne({where:{id: id}});
+  }
+
+ 
 
   findOne(email: string): Promise<User> {
     return this.usersRespository.findOne({where:{ email:email}});

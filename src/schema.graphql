@@ -2,6 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  username: String!
+  email: String!
+  role: String!
+}
+
+type Comment {
+  id: ID!
+  text: String!
+}
+
 type CategoryType {
   id: ID!
   name: String
@@ -50,22 +61,32 @@ type DeleteMetaResponse {
   success: Boolean!
 }
 
-type User {
-  username: String!
-  email: String!
-  role: String!
-}
-
 type LoginResponse {
   access_token: String!
   user: User!
 }
 
-type Post {
+type TagType {
+  id: ID!
+  name: String!
+}
+
+type MetaType {
+  id: ID!
+  metaTitle: String
+  metaDescription: String
+}
+
+type PostType {
   id: ID!
   title: String!
   description: String!
   content: String!
+  subcategories: [SubcategoryType!]
+  tags: [TagType!]
+  meta: MetaType
+  categories: [CategoryType!]!
+  views: Float!
 }
 
 type Query {
@@ -76,16 +97,12 @@ type Query {
   getAllMeta: [Meta!]!
   getMetaById(id: Float!): Meta!
   users: [User!]!
-  user(email: String!): User!
-  getPostById(id: ID!): Post!
-  getAllPosts: [Post!]!
-  searchPosts(input: SearchPostsInput!): [Post!]!
-}
-
-input SearchPostsInput {
-  title: String
-  categoryId: Int
-  tags: [String!]
+  user(id: Float!): User!
+  getPostById(id: Float!): PostType!
+  getAllPosts: [PostType!]!
+  getPostsByTitle(title: String!): [PostType!]!
+  getPostsByCategory(categoryId: Float!): [PostType!]!
+  getPostsByTag(tagId: Float!): [PostType!]!
 }
 
 type Mutation {
@@ -104,9 +121,11 @@ type Mutation {
   create(createUserInput: CreateUserInput!): User!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   signup(signupUserInput: CreateUserInput!): User!
-  createPost(post: CreatePostInput!): Post!
-  updatePost(post: UpdatePostInput!): Post!
-  deletePost(id: ID!): Boolean!
+  createPost(postData: PostInput!): PostType!
+  deletePost(id: Float!): Boolean!
+  updatePost(id: Int!, postData: PostInput!): PostType!
+  incrementViews(postId: Float!): PostType!
+  createComment(commentInput: CreateCommentInput!): Comment!
 }
 
 input CategoryInput {
@@ -137,25 +156,20 @@ input LoginUserInput {
   password: String!
 }
 
-input CreatePostInput {
+input PostInput {
   title: String!
   description: String!
   content: String!
-  categoryIds: [Float!]!
-  subcategoryIds: [Float!]!
-  tagIds: [Float!]!
-  metaTitle: String!
-  metaDescription: String!
-}
-
-input UpdatePostInput {
-  id: Float!
-  title: String
-  description: String
-  content: String
-  categoryIds: [Float!]
-  subcategoryIds: [Float!]
-  tagIds: [Float!]
+  categoryId: Int!
+  subcategoryIds: [Int!]
+  tagIds: [Int!]
+  metaId: Int
   metaTitle: String
   metaDescription: String
+}
+
+input CreateCommentInput {
+  text: String!
+  postId: Int!
+  username: String!
 }

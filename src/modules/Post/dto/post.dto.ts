@@ -1,8 +1,8 @@
 // post.dto.ts
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
 
 @InputType()
-export class CreatePostInput {
+export class PostInput {
   @Field()
   title: string;
 
@@ -12,44 +12,17 @@ export class CreatePostInput {
   @Field()
   content: string;
 
-  @Field(() => [Number])
-  categoryIds: number[];
+  @Field(() => Int)
+  categoryId: number;
 
-  @Field(() => [Number])
-  subcategoryIds: number[];
-
-  @Field(() => [Number])
-  tagIds: number[];
-
-  @Field()
-  metaTitle: string;
-
-  @Field()
-  metaDescription: string;
-}
-
-@InputType()
-export class UpdatePostInput {
-  @Field()
-  id: number;
-
-  @Field({ nullable: true })
-  title?: string;
-
-  @Field({ nullable: true })
-  description?: string;
-
-  @Field({ nullable: true })
-  content?: string;
-
-  @Field(() => [Number], { nullable: true })
-  categoryIds?: number[];
-
-  @Field(() => [Number], { nullable: true })
+  @Field(() => [Int], { nullable: true })
   subcategoryIds?: number[];
 
-  @Field(() => [Number], { nullable: true })
+  @Field(() => [Int], { nullable: true })
   tagIds?: number[];
+
+  @Field(() => Int, { nullable: true })
+  metaId?: number | null; // Add `null` to the type to allow null values
 
   @Field({ nullable: true })
   metaTitle?: string;
