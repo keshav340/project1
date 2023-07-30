@@ -1,4 +1,4 @@
-// create-subcategory.dto.ts
+
 
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 

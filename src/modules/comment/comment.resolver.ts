@@ -1,4 +1,4 @@
-// src/comment/comment.resolver.ts
+
 
 import { Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { CommentService } from 'src/modules/comment/comment.service';

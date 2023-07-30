@@ -29,34 +29,33 @@ export class PostService {
     const { metaId } = postData;
     let metaEntity = null;
 
-    if (metaId) {
     
+    if (metaId) {
+      
       metaEntity = await this.metaRepository.findOne({where:{id: metaId}});
 
-
+      
       if (!metaEntity) {
         throw new NotFoundException('MetaEntity not found');
       }
 
+      
       postData.metaTitle = metaEntity.metaTitle;
       postData.metaDescription = metaEntity.metaDescription;
     } else {
-    
+      
       if (!postData.metaTitle || !postData.metaDescription) {
         throw new BadRequestException('Please provide metaTitle and metaDescription or specify a valid metaId.');
       }
     }
 
-  
     const category = await this.categoryRepository.findOne({ where: { id: postData.categoryId } });
     if (!category) {
       throw new NotFoundException('Category not found');
     }
 
-  
     const subcategories = await this.subcategoryRepository.findByIds(postData.subcategoryIds || []);
 
-    
     const tags = await this.tagRepository.findByIds(postData.tagIds || []);
 
     const post = new Post();
@@ -68,7 +67,7 @@ export class PostService {
     post.tags = tags;
     post.meta = metaEntity;
 
-
+   
     const createdPost = await this.postRepository.save(post);
 
     return createdPost;
@@ -101,7 +100,7 @@ async updatePost(id: number, postData: PostInput): Promise<PostType> {
     throw new NotFoundException('Post not found');
   }
 
-
+  
   if (postData.title) {
     post.title = postData.title;
   }
@@ -111,7 +110,6 @@ async updatePost(id: number, postData: PostInput): Promise<PostType> {
   if (postData.content) {
     post.content = postData.content;
   }
-
   if (postData.categoryId) {
     const category = await this.categoryRepository.findOne({ where: { id: postData.categoryId } });
     if (!category) {
@@ -119,12 +117,13 @@ async updatePost(id: number, postData: PostInput): Promise<PostType> {
     }
     post.categories = [category];
   }
+
+  
   if (postData.subcategoryIds) {
     const subcategories = await this.subcategoryRepository.findByIds(postData.subcategoryIds);
     post.subcategories = subcategories;
   }
 
-  
   if (postData.tagIds) {
     const tags = await this.tagRepository.findByIds(postData.tagIds);
     post.tags = tags;

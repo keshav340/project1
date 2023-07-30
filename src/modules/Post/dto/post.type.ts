@@ -1,4 +1,4 @@
-// post.type.ts
+
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { SubcategoryType } from 'src/modules/subcategory/subcategory.type';
 import { TagType } from 'src/modules/tag/tag.type';
@@ -28,7 +28,7 @@ export class PostType {
   @Field(() => MetaType, { nullable: true })
   meta?: MetaType;
 
-  @Field(() => [CategoryType]) // Update this to an array of CategoryType
+  @Field(() => [CategoryType]) 
   categories: CategoryType[];
   
   @Field()

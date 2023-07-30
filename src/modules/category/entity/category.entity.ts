@@ -27,5 +27,5 @@ export class Category {
  
   posts: Post[];
 
-  // Add any additional columns or relationships as needed
+ 
 }

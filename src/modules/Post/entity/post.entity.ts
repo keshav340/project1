@@ -1,4 +1,4 @@
-// post.entity.ts
+
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToOne, JoinColumn,OneToMany} from 'typeorm';
 import { Category } from 'src/modules/category/entity/category.entity';
 import { Subcategory } from 'src/modules/subcategory/entity/subcategory.entity';

@@ -1,4 +1,4 @@
-// post.dto.ts
+
 import { InputType, Field, Int } from '@nestjs/graphql';
 
 @InputType()

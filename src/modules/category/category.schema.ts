@@ -12,7 +12,7 @@ export class Category {
   @Field()
   description: string;
 
-  @Field(() => [Subcategory]) // Use the correct decorator for the subcategories field
+  @Field(() => [Subcategory]) 
   subcategories: Subcategory[];
 }
 

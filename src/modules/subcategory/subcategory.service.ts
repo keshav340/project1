@@ -18,20 +18,19 @@ export class SubcategoryService {
   async createSubcategory(subcategoryInput: CreateSubcategoryInput): Promise<SubcategoryType> {
     const { categoryId, ...data } = subcategoryInput;
 
-    // Fetch the category by ID to ensure it exists
     const category = await this.categoryRepository.findOne({where:{id:categoryId}});
     if (!category) {
       throw new NotFoundException('Category not found');
     }
 
-    // Create the subcategory and assign the category
+    
     const subcategory = this.subcategoryRepository.create(data);
     subcategory.category = category;
 
-    // Save the subcategory and return the result
+    
     const createdSubcategory = await this.subcategoryRepository.save(subcategory);
 
-    // Map the created subcategory to the SubcategoryType
+    
     return {
       id: createdSubcategory.id,
       name: createdSubcategory.name,
@@ -72,7 +71,7 @@ export class SubcategoryService {
   async updateSubcategory(updateSubcategoryInput: UpdateSubcategoryInput): Promise<SubcategoryType> {
     const { id, ...data } = updateSubcategoryInput;
   
-    // Fetch the subcategory by ID using QueryBuilder
+    
     const subcategory = await this.subcategoryRepository
       .createQueryBuilder('subcategory')
       .leftJoinAndSelect('subcategory.category', 'category')
@@ -83,7 +82,7 @@ export class SubcategoryService {
       throw new NotFoundException('Subcategory not found');
     }
   
-    // Update the subcategory
+   
     Object.assign(subcategory, data);
     await this.subcategoryRepository.save(subcategory);
   

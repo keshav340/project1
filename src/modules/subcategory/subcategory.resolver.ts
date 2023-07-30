@@ -3,6 +3,11 @@ import { SubcategoryService } from './subcategory.service';
 import { SubcategoryType } from './subcategory.type';
 import { CreateSubcategoryInput, UpdateSubcategoryInput } from './subcategory.input';
 import { NotFoundException } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import Role from 'src/modules/enums/roles.enum'
+
 
 @Resolver(() => SubcategoryType)
 export class SubcategoryResolver {
@@ -14,6 +19,8 @@ export class SubcategoryResolver {
   }
 
   @Mutation(() => SubcategoryType)
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.EDITOR)
   async createSubcategory(
     @Args('subcategoryInput') subcategoryInput: CreateSubcategoryInput,
   ): Promise<SubcategoryType> {
@@ -21,6 +28,8 @@ export class SubcategoryResolver {
   }
 
   @Mutation(() => SubcategoryType)
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.EDITOR)
   async updateSubcategory(
     @Args('updateSubcategoryInput') updateSubcategoryInput: UpdateSubcategoryInput,
   ): Promise<SubcategoryType> {
@@ -28,6 +37,8 @@ export class SubcategoryResolver {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN, Role.EDITOR)
   async deleteSubcategory(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
     const deleted = await this.subcategoryService.deleteSubcategory(id);
     
