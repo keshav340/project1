@@ -19,8 +19,8 @@ export class SubcategoryResolver {
   }
 
   @Mutation(() => SubcategoryType)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  //@UseGuards(RolesGuard)
+  //@Roles(Role.ADMIN, Role.EDITOR)
   async createSubcategory(
     @Args('subcategoryInput') subcategoryInput: CreateSubcategoryInput,
   ): Promise<SubcategoryType> {
@@ -28,8 +28,8 @@ export class SubcategoryResolver {
   }
 
   @Mutation(() => SubcategoryType)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  //@UseGuards(RolesGuard)
+  //@Roles(Role.ADMIN, Role.EDITOR)
   async updateSubcategory(
     @Args('updateSubcategoryInput') updateSubcategoryInput: UpdateSubcategoryInput,
   ): Promise<SubcategoryType> {
@@ -37,8 +37,8 @@ export class SubcategoryResolver {
   }
 
   @Mutation(() => Boolean)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  //@UseGuards(RolesGuard)
+ // @Roles(Role.ADMIN, Role.EDITOR)
   async deleteSubcategory(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
     const deleted = await this.subcategoryService.deleteSubcategory(id);
     

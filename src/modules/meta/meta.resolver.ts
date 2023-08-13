@@ -22,8 +22,8 @@ export class MetaResolver {
   }
   
   @Mutation(() => CreateMetaResponse)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN, Role.EDITOR)
   async createMeta(@Args() { metaTitle, metaDescription }: CreateMetaArgs): Promise<CreateMetaResponse> {
     const meta = await this.metaService.create(metaTitle, metaDescription);
     return { meta };
@@ -31,16 +31,16 @@ export class MetaResolver {
   
 
   @Mutation(() => UpdateMetaResponse)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN, Role.EDITOR)
   async updateMeta(@Args() { id, metaTitle, metaDescription }: UpdateMetaArgs): Promise<UpdateMetaResponse> {
     const meta = await this.metaService.update(id, metaTitle, metaDescription);
     return { meta };
   }
 
   @Mutation(() => DeleteMetaResponse)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN, Role.EDITOR)
   async deleteMeta(@Args() deleteMetaArgs: DeleteMetaArgs): Promise<DeleteMetaResponse> {
     const success = await this.metaService.delete(deleteMetaArgs.id);
     return { success };

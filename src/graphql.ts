@@ -8,6 +8,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface LoginUserInput {
+    email: string;
+    password: string;
+}
+
+export interface CreateUserInput {
+    email: string;
+    username: string;
+    password: string;
+}
+
 export interface CategoryInput {
     name: string;
     description: string;
@@ -23,17 +34,6 @@ export interface UpdateSubcategoryInput {
     id: number;
     name?: Nullable<string>;
     description?: Nullable<string>;
-}
-
-export interface CreateUserInput {
-    email: string;
-    username: string;
-    password: string;
-}
-
-export interface LoginUserInput {
-    email: string;
-    password: string;
 }
 
 export interface PostInput {
@@ -54,9 +54,17 @@ export interface CreateCommentInput {
     username: string;
 }
 
+export interface Session {
+    id: number;
+    token: string;
+    expiration: DateTime;
+}
+
 export interface User {
-    username: string;
+    id: number;
     email: string;
+    username: string;
+    password: string;
     role: string;
 }
 
@@ -116,6 +124,7 @@ export interface DeleteMetaResponse {
 export interface LoginResponse {
     access_token: string;
     user: User;
+    sessions: Session[];
 }
 
 export interface TagType {
@@ -142,14 +151,14 @@ export interface PostType {
 }
 
 export interface IQuery {
+    users(): User[] | Promise<User[]>;
+    user(email: string): User | Promise<User>;
     getAllCategories(): CategoryType[] | Promise<CategoryType[]>;
     getCategory(id: number): CategoryType | Promise<CategoryType>;
     getSubcategoryById(id: number): SubcategoryType | Promise<SubcategoryType>;
     getAllTags(): Tag[] | Promise<Tag[]>;
     getAllMeta(): Meta[] | Promise<Meta[]>;
     getMetaById(id: number): Meta | Promise<Meta>;
-    users(): User[] | Promise<User[]>;
-    user(id: number): User | Promise<User>;
     getPostById(id: number): PostType | Promise<PostType>;
     getAllPosts(): PostType[] | Promise<PostType[]>;
     getPostsByTitle(title: string): PostType[] | Promise<PostType[]>;
@@ -158,6 +167,10 @@ export interface IQuery {
 }
 
 export interface IMutation {
+    login(loginUserInput: LoginUserInput): LoginResponse | Promise<LoginResponse>;
+    logout(sessionId: number): boolean | Promise<boolean>;
+    signup(signupUserInput: CreateUserInput): User | Promise<User>;
+    create(createUserInput: CreateUserInput): User | Promise<User>;
     createCategory(categoryInput: CategoryInput): CategoryType | Promise<CategoryType>;
     updateCategory(id: number, categoryInput: CategoryInput): CategoryType | Promise<CategoryType>;
     deleteCategory(id: number): boolean | Promise<boolean>;
@@ -170,9 +183,6 @@ export interface IMutation {
     createMeta(metaTitle: string, metaDescription?: Nullable<string>): CreateMetaResponse | Promise<CreateMetaResponse>;
     updateMeta(id: number, metaTitle?: Nullable<string>, metaDescription?: Nullable<string>): UpdateMetaResponse | Promise<UpdateMetaResponse>;
     deleteMeta(id: number): DeleteMetaResponse | Promise<DeleteMetaResponse>;
-    create(createUserInput: CreateUserInput): User | Promise<User>;
-    login(loginUserInput: LoginUserInput): LoginResponse | Promise<LoginResponse>;
-    signup(signupUserInput: CreateUserInput): User | Promise<User>;
     createPost(postData: PostInput): PostType | Promise<PostType>;
     deletePost(id: number): boolean | Promise<boolean>;
     updatePost(id: number, postData: PostInput): PostType | Promise<PostType>;
@@ -180,4 +190,5 @@ export interface IMutation {
     createComment(commentInput: CreateCommentInput): Comment | Promise<Comment>;
 }
 
+export type DateTime = any;
 type Nullable<T> = T | null;

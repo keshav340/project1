@@ -21,8 +21,8 @@ export class CategoryResolver {
   }
 
   @Mutation(() => CategoryType)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN, Role.EDITOR)
   async createCategory(
     @Args('categoryInput') categoryInput: CategoryInput,
   ): Promise<CategoryType> {
@@ -30,8 +30,8 @@ export class CategoryResolver {
   }
 
   @Mutation(() => CategoryType)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN, Role.EDITOR)
   async updateCategory(
     @Args('id') id: number,
     @Args('categoryInput') categoryInput: CategoryInput,
@@ -40,8 +40,8 @@ export class CategoryResolver {
   }
 
   @Mutation(() => Boolean)
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.EDITOR)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN, Role.EDITOR)
   async deleteCategory(@Args('id') id: number): Promise<boolean> {
     return this.categoryService.deleteCategory(id);
   }
