@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID, InputType } from 'type-graphql';
-import { Subcategory } from '../subcategory/subcategory.schema';
+//import { Subcategory } from '../subcategory/subcategory.schema';
 
 @ObjectType()
 export class Category {
@@ -12,8 +12,8 @@ export class Category {
   @Field()
   description: string;
 
-  @Field(() => [Subcategory]) 
-  subcategories: Subcategory[];
+  // @Field(() => [Subcategory]) 
+  // subcategories: Subcategory[];
 }
 
 @InputType()

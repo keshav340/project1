@@ -1,10 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { CategoryType, CategoryInput } from '../category/dto/category.dto';
+// category/category.resolver.ts
+
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import { CategoryType, CategoryInput } from './dto/category.dto';
 import { CategoryService } from './category.service';
 import { UseGuards } from '@nestjs/common';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import Role from "src/modules/enums/roles.enum"
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
+import { User } from '../users/entities/user.entity'; // Import the User entity
 
 @Resolver(() => CategoryType)
 export class CategoryResolver {
@@ -21,17 +22,18 @@ export class CategoryResolver {
   }
 
   @Mutation(() => CategoryType)
-  // @UseGuards(RolesGuard)
-  // @Roles(Role.ADMIN, Role.EDITOR)
+  @UseGuards(GqlAuthGuard)
   async createCategory(
     @Args('categoryInput') categoryInput: CategoryInput,
+    @Context() context,
   ): Promise<CategoryType> {
-    return this.categoryService.createCategory(categoryInput);
+    const creator: User = context.req.user;
+    console.log('Creator:', creator);
+    return this.categoryService.createCategory(categoryInput, creator);
   }
 
   @Mutation(() => CategoryType)
-  // @UseGuards(RolesGuard)
-  // @Roles(Role.ADMIN, Role.EDITOR)
+  @UseGuards(GqlAuthGuard)
   async updateCategory(
     @Args('id') id: number,
     @Args('categoryInput') categoryInput: CategoryInput,
@@ -40,8 +42,7 @@ export class CategoryResolver {
   }
 
   @Mutation(() => Boolean)
-  // @UseGuards(RolesGuard)
-  // @Roles(Role.ADMIN, Role.EDITOR)
+  @UseGuards(GqlAuthGuard)
   async deleteCategory(@Args('id') id: number): Promise<boolean> {
     return this.categoryService.deleteCategory(id);
   }

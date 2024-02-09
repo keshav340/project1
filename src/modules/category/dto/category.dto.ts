@@ -1,5 +1,5 @@
 import { InputType, ObjectType, Field,ID } from '@nestjs/graphql';
-
+import { UserType } from 'src/modules/users/dto/user.type';
 @InputType()
 export class CategoryInput {
   @Field()
@@ -19,5 +19,7 @@ export class CategoryType {
 
   @Field(() => String, { nullable: true })
   description: string;
+  @Field(() => UserType) // Include the creator field of UserType
+  creator: UserType;
 }
  

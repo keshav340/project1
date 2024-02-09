@@ -21,57 +21,18 @@ type User {
   role: String!
 }
 
-type Comment {
-  id: ID!
-  text: String!
+type UserType {
+  id: Int!
+  email: String!
+  username: String!
+  role: String!
 }
 
 type CategoryType {
   id: ID!
   name: String
   description: String
-}
-
-type SubcategoryType {
-  id: Int!
-  name: String!
-  description: String!
-  category: CategoryType!
-}
-
-type Tag {
-  id: ID!
-  name: String!
-}
-
-type CreateTagResponse {
-  tag: Tag!
-}
-
-type UpdateTagResponse {
-  tag: Tag!
-}
-
-type DeleteTagResponse {
-  success: Boolean!
-}
-
-type Meta {
-  id: ID!
-  metaTitle: String!
-  metaDescription: String
-}
-
-type CreateMetaResponse {
-  meta: Meta!
-}
-
-type UpdateMetaResponse {
-  meta: Meta!
-}
-
-type DeleteMetaResponse {
-  success: Boolean!
+  creator: UserType!
 }
 
 type LoginResponse {
@@ -80,43 +41,11 @@ type LoginResponse {
   sessions: [Session!]!
 }
 
-type TagType {
-  id: ID!
-  name: String!
-}
-
-type MetaType {
-  id: ID!
-  metaTitle: String
-  metaDescription: String
-}
-
-type PostType {
-  id: ID!
-  title: String!
-  description: String!
-  content: String!
-  subcategories: [SubcategoryType!]
-  tags: [TagType!]
-  meta: MetaType
-  categories: [CategoryType!]!
-  views: Float!
-}
-
 type Query {
   users: [User!]!
   user(email: String!): User!
   getAllCategories: [CategoryType!]!
   getCategory(id: Float!): CategoryType!
-  getSubcategoryById(id: Int!): SubcategoryType!
-  getAllTags: [Tag!]!
-  getAllMeta: [Meta!]!
-  getMetaById(id: Float!): Meta!
-  getPostById(id: Float!): PostType!
-  getAllPosts: [PostType!]!
-  getPostsByTitle(title: String!): [PostType!]!
-  getPostsByCategory(categoryId: Float!): [PostType!]!
-  getPostsByTag(tagId: Float!): [PostType!]!
 }
 
 type Mutation {
@@ -127,20 +56,6 @@ type Mutation {
   createCategory(categoryInput: CategoryInput!): CategoryType!
   updateCategory(id: Float!, categoryInput: CategoryInput!): CategoryType!
   deleteCategory(id: Float!): Boolean!
-  createSubcategory(subcategoryInput: CreateSubcategoryInput!): SubcategoryType!
-  updateSubcategory(updateSubcategoryInput: UpdateSubcategoryInput!): SubcategoryType!
-  deleteSubcategory(id: Int!): Boolean!
-  createTag(name: String!): CreateTagResponse!
-  updateTag(id: Float!, name: String): UpdateTagResponse!
-  deleteTag(id: Float!): DeleteTagResponse!
-  createMeta(metaTitle: String!, metaDescription: String): CreateMetaResponse!
-  updateMeta(id: Int!, metaTitle: String, metaDescription: String): UpdateMetaResponse!
-  deleteMeta(id: Int!): DeleteMetaResponse!
-  createPost(postData: PostInput!): PostType!
-  deletePost(id: Float!): Boolean!
-  updatePost(id: Int!, postData: PostInput!): PostType!
-  incrementViews(postId: Float!): PostType!
-  createComment(commentInput: CreateCommentInput!): Comment!
 }
 
 input LoginUserInput {
@@ -157,34 +72,4 @@ input CreateUserInput {
 input CategoryInput {
   name: String!
   description: String!
-}
-
-input CreateSubcategoryInput {
-  name: String!
-  description: String!
-  categoryId: Int!
-}
-
-input UpdateSubcategoryInput {
-  id: Int!
-  name: String
-  description: String
-}
-
-input PostInput {
-  title: String!
-  description: String!
-  content: String!
-  categoryId: Int!
-  subcategoryIds: [Int!]
-  tagIds: [Int!]
-  metaId: Int
-  metaTitle: String
-  metaDescription: String
-}
-
-input CreateCommentInput {
-  text: String!
-  postId: Int!
-  username: String!
 }
